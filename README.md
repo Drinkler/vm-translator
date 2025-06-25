@@ -61,9 +61,3 @@ make clean
 When the input is a directory, the translator emits `DirectoryName.asm` inside the same folder; for a single file it writes `BaseName.asm` alongside the source file.
 
 ---
-
-## License
-
-MIT License — see the [LICENSE](LICENSE) file for full text.
-
----

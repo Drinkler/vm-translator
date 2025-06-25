@@ -1,27 +1,39 @@
-CC = gcc # Compiler
-CFLAGS = -std=c2x -Wall -Wextra -pedantic -g # Compiler flags
-SRC = main.c util.c parser.c codewriter.c # Source files
-OBJ = $(SRC:.c=.o) # Translates .c to .o filenames
-EXEC = VMTranslator # Executable filename
+CC = gcc
+BUILD ?= debug
 
-# Directories
-BUILD_DIR = build
-RELEASE_DIR = $(BUILD_DIR)/release
-DEBUG_DIR = $(BUILD_DIR)/debug
+SRCDIR = src
+INCDIR = include
+BUILDDIR = build/$(BUILD)
+BINDIR = bin/$(BUILD)
+TARGET = $(BINDIR)/VMTranslator
 
-# Targets with directory prefixes
-RELEASE_TARGET = $(RELEASE_DIR)/VMTranslator
-DEBUG_TARGET = $(DEBUG_DIR)/VMTranslator-debug
+CFLAGS_COMMON = -std=c2x -Wall -Wextra -I$(INCDIR)
+ifeq ($(BUILD), release)
+	CFLAGS += $(CFLAGS_COMMON) -O3
+else
+	CFLAGS += $(CFLAGS_COMMON) -O0 -g
+endif
 
-all: $(EXEC) # Default target
+SRCS := $(wildcard $(SRCDIR)/*.c)
+OBJS = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRCS))
 
-$(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ)
+.PHONY: all clean debug release
 
-%.o: %.c
+all: $(TARGET)
+
+debug:
+	$(MAKE) BUILD=debug   all
+
+release:
+	$(MAKE) BUILD=release all
+
+$(TARGET): $(OBJS)
+	@mkdir -p $(BINDIR)
+	$(CC) $^ -o $@
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(EXEC)
-
-.PHONY: all clean
+	rm -rf build bin

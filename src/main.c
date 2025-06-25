@@ -1,5 +1,6 @@
 #include <dirent.h>
 #include <sys/stat.h>
+#include <libgen.h>
 
 #include "codewriter.h"
 #include "parser.h"

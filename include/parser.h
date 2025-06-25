@@ -22,6 +22,6 @@ typedef struct {
 } ParsedCommand;
 
 ParsedCommand parse_command(const char *line);
-CommandType command_type(const char *cmd);
+CommandType get_command_type(const char *cmd);
 
 #endif

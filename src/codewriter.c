@@ -1,6 +1,8 @@
 #include "codewriter.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void write_bootstrap(FILE *output_file) {
     fputs("@256\nD=A\n@SP\nM=D\n", output_file);

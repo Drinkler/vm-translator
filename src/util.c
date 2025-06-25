@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 
 char *remove_comment(char *line) {
     char *comment = strstr(line, "//");
